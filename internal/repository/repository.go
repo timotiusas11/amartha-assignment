@@ -126,12 +126,12 @@ func (r Repository) UpdateLoan(loan model.Loan) error {
 }
 
 const (
-	AgreementLetterChannel         = "agreement_letter"
+	EmailAgreementLetterChannel    = "email_agreement_letter"
 	GenerateAgreementLetterChannel = "generate_agreement_letter"
 )
 
 func (r Repository) Publish(loanID int64, invesment model.Investment) error {
-	return r.nsqClient.Send(AgreementLetterChannel, map[string]interface{}{
+	return r.nsqClient.Send(EmailAgreementLetterChannel, map[string]interface{}{
 		"loan_id":         loanID,
 		"investor_id":     invesment.InvestorID,
 		"invested_amount": invesment.InvestedAmount,

@@ -46,6 +46,12 @@ func (u Usecase) CreateLoan(borrowerID int64, principalAmount float64, rate floa
 		return errors.New("failed to insert loan: " + err.Error())
 	}
 
+	// Generate agreement letter
+	err = u.RepositoryInterface.GenerateAgreementLetter(loan.LoanID)
+	if err != nil {
+		return fmt.Errorf("failed to generate agreement letter: %w", err)
+	}
+
 	return nil
 }
 
@@ -173,12 +179,6 @@ func (u Usecase) Invest(loanID int64, investment model.Investment) error {
 	// If the total invested amount matches the principal amount, update the loan's status
 	if totalInvestedAmount == loan.PrincipalAmount {
 		loan.State = model.StateEnumInvested
-
-		// Generate agreement letter
-		err = u.RepositoryInterface.GenerateAgreementLetter(loan.LoanID)
-		if err != nil {
-			return fmt.Errorf("failed to generate agreement letter: %w", err)
-		}
 
 		// Assume that the agreement letter has been generated in another service (background service)
 		loan.AgreementLetterURL = "https://example.com/agreement_letter.pdf"
