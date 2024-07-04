@@ -8,6 +8,8 @@ Here, I propose several services to fulfill the requirements of the Loan Service
 - **agreement-letter-generator-service**: Responsible for generating the agreement letter for the borrower.
 - **email-service**: Responsible for sending an email containing a link to the agreement letter.
 
+I suggest generating the agreement letter and sending the email in the background process so that users don't have to wait, as it interrupts their experience.
+
 ![System Design](system-design.png)
 
 ### 2. List of APIs
